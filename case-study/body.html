@@ -1,0 +1,307 @@
+<article class="cs">
+  <div class="cs-progress" aria-hidden="true"><i data-cs-progress=""></i></div>
+
+  <header class="cs-hero">
+    <div class="cs-hero-in">
+      <nav class="cs-crumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/case-studies">Case studies</a><span aria-hidden="true">/</span><span aria-current="page">SAP sales order automation</span></nav>
+      <h1>How we automated SAP sales order entry with AI<span class="dot">.</span></h1>
+      <p class="cs-dek">A case study in AI sales order automation at a leading packaging film manufacturer: orders arrive in any format, a person approves them, and SAP gets one clean sales contract.</p>
+      <p class="cs-meta"><span>By the {{BRAND}} team</span><span><time datetime="2026-11-07">7 November 2026</time></span><span>15 min read</span><span>BOPP film</span></p>
+      <ol class="cs-flow" aria-label="How an order moves">
+        <li class="ext"><small>An order arrives</small><b>In any format</b></li>
+        <li class="ai"><small>The system</small><b>Reads and checks</b></li>
+        <li class="person"><small>A person</small><b>Approves</b></li>
+        <li class="erp"><small>SAP gets</small><b>A clean contract</b></li>
+      </ol>
+    </div>
+  </header>
+
+  <section class="cs-glance" aria-label="The project in brief">
+    <div class="cs-glance-in">
+      <div><b>The client</b><small>A leading packaging-film manufacturer in India, with about 2,000 customers</small></div>
+      <div><b>The problem</b><small>Orders came in every format, and each one was keyed into SAP by hand</small></div>
+      <div><b>What we built</b><small>A customer portal and a staff desk where AI reads the order and a person approves it</small></div>
+      <div><b>Where it stands</b><small>In production at the client today</small></div>
+    </div>
+  </section>
+
+  <div class="cs-layout">
+    <nav class="cs-toc" aria-label="Chapters">
+      <p>In this story</p>
+      <a href="#start" data-cs-toc="start"><span>01</span>The problem</a>
+      <a href="#requirements" data-cs-toc="requirements"><span>02</span>Requirement gathering</a>
+      <a href="#architecture" data-cs-toc="architecture"><span>03</span>The architecture</a>
+      <a href="#interface" data-cs-toc="interface"><span>04</span>The interface</a>
+      <a href="#build" data-cs-toc="build"><span>05</span>The build</a>
+      <a href="#challenges" data-cs-toc="challenges"><span>06</span>SAP challenges</a>
+      <a href="#security" data-cs-toc="security"><span>07</span>Security</a>
+      <a href="#cost" data-cs-toc="cost"><span>08</span>AI costs</a>
+      <a href="#accuracy" data-cs-toc="accuracy"><span>09</span>Film grade accuracy</a>
+      <a href="#impact" data-cs-toc="impact"><span>10</span>The impact</a>
+    </nav>
+
+    <div class="cs-body">
+      <aside class="cs-short" data-rv="">
+        <h2>The short answer</h2>
+        <p>To automate SAP sales order entry with AI, let AI read the order and suggest the values, let fixed rules check them against SAP data, and have a person approve before a background service writes the contract to SAP. We built this for a packaging film manufacturer, and it is in production. The hard part was not reading documents. It was working out which film each customer means.</p>
+      </aside>
+
+      <section id="start" class="cs-ch">
+        <p class="cs-no" data-rv="">01</p>
+        <h2 data-rv="">The problem: manual order entry in SAP<span class="dot">.</span></h2>
+        <p data-rv="">Sales order automation sounds simple until you see how orders really arrive. Our client makes BOPP film, the thin plastic used in packaging and labels. Around 2,000 customers sit on its books, and about 70% of orders repeat something the customer has bought before. One month&rsquo;s contract export gave us 326 contracts and 2,290 film lines.</p>
+        <p data-rv="">Those orders rarely arrived in a neat format. Some were proper purchase orders. Others were a WhatsApp photo of a handwritten list, a phone call, or a two-line email. Customers wrote in their own shorthand: one who says &ldquo;22 micron&rdquo; means a specific grade called 22 TPT. Only an experienced sales manager knew what each customer meant.</p>
+        <p data-rv="">The sales managers turned all of this into Excel sheets and emailed them to the desk. A desk operator then keyed every order into SAP by hand: 15 to 20 fields, a roll calculation, and then a second pass just for discounts. An officer checked the result by printing it and comparing it with the source.</p>
+        <figure class="cs-quote" data-rv="">
+          <blockquote>If 25 different items are entered, 10 or 15 could have mismatches. Who is responsible?</blockquote>
+          <figcaption>From our notes of the first workshop with the sales team</figcaption>
+        </figure>
+      </section>
+
+      <section id="requirements" class="cs-ch">
+        <p class="cs-no" data-rv="">02</p>
+        <h2 data-rv="">Requirement gathering: we started by listening<span class="dot">.</span></h2>
+        <p data-rv="">We wrote no code at first. We began with a workshop in May, spent three straight days in July on the domestic order process alone, and followed that with a run of working reviews.</p>
+        <ol class="cs-timeline">
+          <li data-rv=""><span>May</span><div><b>First workshop</b><p>The sales team walked us through the process and its pain points. They also set a firm rule: no AI gets direct access to SAP.</p></div></li>
+          <li data-rv=""><span>Day 1</span><div><b>Intake and order fields</b><p>What arrives, which fields matter, how rolls are calculated, and how payment terms work.</p></div></li>
+          <li data-rv=""><span>Day 2</span><div><b>The order&rsquo;s whole life</b><p>Create, release, modify and cancel, plus how a requested 5,000 kg becomes the nearest quantity SAP can actually make.</p></div></li>
+          <li data-rv=""><span>Day 3</span><div><b>Channels and approvals</b><p>Who may do what, how every route reaches one approval, and the difference between cancelling an order and closing what is left of it.</p></div></li>
+          <li data-rv=""><span>Aug</span><div><b>Reviews on real screens</b><p>Screen flows, a product presentation, a roles review, a feedback call and an acceptance demo, each one changing what we built.</p></div></li>
+        </ol>
+        <p data-rv="">We also collected the real material: customer and film master data, past contracts, payment-term lists, and photos of actual orders. Those samples later became our test set. We parked exports early, because they run on a different process and deserved their own requirements work.</p>
+      </section>
+
+      <section id="architecture" class="cs-ch">
+        <p class="cs-no" data-rv="">03</p>
+        <h2 data-rv="">The architecture: one rule shaped it<span class="dot">.</span></h2>
+        <p data-rv="">The client&rsquo;s <a class="cs-il" href="/#control">concern about data and sign-off</a> became our design principle: <strong>AI may read and suggest, fixed rules decide what is valid, and a person signs every write to SAP.</strong> Everything else follows from that, and it is the same <a class="cs-il" href="/#how">way every workflow runs</a> on our platform.</p>
+        <div class="cs-stack" role="list" aria-label="How an order moves through the system">
+          <div role="listitem" class="ext" data-rv=""><b>Order comes in</b><span>Customer portal, or the desk uploads a file or pastes an email</span></div>
+          <div role="listitem" class="ai" data-rv=""><b>Reading</b><span>Known spreadsheets go through plain rules. Photos and PDFs go to a language model</span></div>
+          <div role="listitem" class="ret" data-rv=""><b>Matching</b><span>Customer, film grade and terms are matched against SAP data and that customer&rsquo;s history</span></div>
+          <div role="listitem" class="rule" data-rv=""><b>Checks</b><span>12 business checks, then a stricter check of the fields SAP needs</span></div>
+          <div role="listitem" class="person" data-rv=""><b>A person signs</b><span>Sales manager approval, desk review, and submit</span></div>
+          <div role="listitem" class="erp" data-rv=""><b>SAP</b><span>A background queue creates the contract, then reads back what SAP stored</span></div>
+        </div>
+        <p data-rv="">Four choices did most of the work:</p>
+        <ul class="cs-list">
+          <li data-rv=""><strong>SAP never makes anyone wait.</strong> A submit joins a queue, the screen stays free, and a live status updates by itself.</li>
+          <li data-rv=""><strong>Every order has one frozen reference.</strong> That is how we can always ask SAP whether it already has this order.</li>
+          <li data-rv=""><strong>One database does the job of many tools.</strong> The queue lives in the same database as the orders, so there is less to run and less to break.</li>
+          <li data-rv=""><strong>SAP stays the source of truth.</strong> Customers and films sync from SAP every night, and the app never overwrites them.</li>
+        </ul>
+      </section>
+
+      <section id="interface" class="cs-ch">
+        <p class="cs-no" data-rv="">04</p>
+        <h2 data-rv="">The interface: screens before spend<span class="dot">.</span></h2>
+        <p data-rv="">We built a clickable prototype first and reviewed it with the people who would use it, so most arguments happened before any expensive build. We then shaped one product around four roles:</p>
+        <div class="cs-roles">
+          <div data-rv=""><b>Customer</b><span>Upload an order or reorder in a few taps, then track it</span></div>
+          <div data-rv=""><b>Sales manager</b><span>Approve orders on their own accounts and act for a customer</span></div>
+          <div data-rv=""><b>Desk team</b><span>Review, fix and submit to SAP, and raise change requests</span></div>
+          <div data-rv=""><b>Admin</b><span>Release contracts, approve changes and manage the team</span></div>
+        </div>
+        <p data-rv="">Three ideas carried the design. A value the system guessed always says so, with its reason beside it. Any field can be edited where it sits, without opening a new form. And the staff copilot shows a plan card that does nothing until a person confirms it. A long screen-share review with the sales team later produced a 56-point list, which we worked through line by line.</p>
+      </section>
+
+      <section id="build" class="cs-ch">
+        <p class="cs-no" data-rv="">05</p>
+        <h2 data-rv="">The build: then we tried to break it<span class="dot">.</span></h2>
+        <p data-rv="">The project grew to 42 screens, about 20 backend modules and around 1,650 automated backend checks. The test that taught us most was simple: put test orders through the real interface against a SAP test system, in a browser, the way a person would. We ran it three times, fixing what broke in between.</p>
+        <div class="cs-runs">
+          <div data-rv=""><span>Run 1</span><b>100 test orders</b><p>322 feature checks found 48 defects, 5 of them serious. SAP refused 10 orders.</p></div>
+          <div data-rv=""><span>Run 2</span><b>100 test orders</b><p>After 69 fixes: no refusals, and no duplicate through 63 minutes of SAP downtime.</p></div>
+          <div data-rv=""><span>Run 3</span><b>200 test orders</b><p>The last 122 used twenty browsers at once. What SAP stored matched our record on all 200.</p></div>
+        </div>
+        <p class="cs-after" data-rv="">In the scripted runs, an order took about 41 seconds from placed to released in SAP. That is system time only, with no human review in it.</p>
+      </section>
+
+      <section id="challenges" class="cs-ch">
+        <p class="cs-no" data-rv="">06</p>
+        <h2 data-rv="">Challenges of writing to SAP<span class="dot">.</span></h2>
+        <div class="cs-cards">
+          <div data-rv=""><h3>SAP&rsquo;s answers could not be taken at face value</h3><p>One order returned a server error, yet SAP had created the contract. A successful release came back as an error code. So we stopped trusting responses: before any retry the system asks SAP what it holds, and anything unclear stops for a person.</p></div>
+          <div data-rv=""><h3>A customer&rsquo;s 5,000 kg is not a quantity SAP can make</h3><p>Film is made in whole rolls, so SAP offers the two nearest quantities and someone picks one. The new screen had to show the same choices before anything was sent. We rebuilt SAP&rsquo;s roll calculation from the client&rsquo;s own SAP logic, then compared it on 184 real order lines. The roll count matched on every one.</p></div>
+          <div data-rv=""><h3>One purchase order, two contracts</h3><p>Customers mix film families on one PO, but SAP needs some of them on separate contracts, and each contract needs its own reference. So the system splits the order, tells the person why before they place it, and numbers the references the way the client asked: PO, then PO/2.</p></div>
+          <div data-rv=""><h3>Changing a contract already in production</h3><p>A released contract is locked. Changing it means unreleasing it, applying the change and getting it released again, and SAP and our app must agree at every step. Early on, a failed check left one contract unreleased in SAP while our app said released. Now the checks run before SAP acts, and if SAP refuses a cancellation, the release is put back.</p></div>
+        </div>
+      </section>
+
+      <section id="security" class="cs-ch">
+        <p class="cs-no" data-rv="">07</p>
+        <h2 data-rv="">Security: built in and tested against the OWASP Top 10<span class="dot">.</span></h2>
+        <p data-rv="">This system reads files from outside the company and writes to the ERP, so security was part of the design from day one.</p>
+        <h3 class="cs-h3" data-rv="">Authentication and tokens</h3>
+        <ul class="cs-misses">
+          <li data-rv=""><b>One-time codes</b><span>There are no passwords to steal. A code lasts 5 minutes, allows 5 attempts, and is stored only as a salted hash.</span></li>
+          <li data-rv=""><b>Access tokens</b><span>Signed with RS256, valid for 15 minutes, checked on every request, and revocable at once.</span></li>
+          <li data-rv=""><b>Refresh tokens</b><span>Kept in an HttpOnly cookie that page scripts cannot read, stored only as a hash, and replaced on every use. If an old token comes back, the whole session is ended.</span></li>
+        </ul>
+        <h3 class="cs-h3" data-rv="">Encrypted data</h3>
+        <p data-rv="">Emails, phone numbers and names are encrypted field by field with AES-256, so a copy of the database does not reveal them. Exact-match search uses a separate blind index with its own key, so leaking one key does not expose both.</p>
+        <h3 class="cs-h3" data-rv="">OWASP Top 10 testing</h3>
+        <p data-rv="">We ran penetration tests against all ten OWASP Top 10:2025 categories and the OWASP API Top 10, plus automated access checks for every role. We fixed what the tests found and re-tested each fix until it passed.</p>
+        <table class="cs-table two" data-rv="">
+          <caption class="cs-sr">OWASP Top 10:2025 categories and how the application handles them</caption>
+          <thead><tr><th scope="col">OWASP category</th><th scope="col">How the application handles it</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">A01 Broken access control</th><td>Every role and record is checked on the server. Customers cannot reach another company&rsquo;s data, and outbound requests cannot reach internal addresses.</td></tr>
+            <tr><th scope="row">A02 Security misconfiguration</th><td>Only approved websites can call the API, and responses reveal no framework details or error traces.</td></tr>
+            <tr><th scope="row">A03 Software supply chain failures</th><td>Vulnerable dependencies were updated, and riskier image formats were removed from uploads.</td></tr>
+            <tr><th scope="row">A04 Cryptographic failures</th><td>Tokens are signed, personal data is encrypted, and connections are encrypted.</td></tr>
+            <tr><th scope="row">A05 Injection</th><td>SQL, script, header and spreadsheet-formula injection are blocked. Text inside a document cannot instruct the AI.</td></tr>
+            <tr><th scope="row">A06 Insecure design</th><td>The AI cannot write to SAP, and critical SAP checks cannot be overridden.</td></tr>
+            <tr><th scope="row">A07 Authentication failures</th><td>One-time codes have attempt limits, tokens rotate, and responses do not reveal whether an account exists.</td></tr>
+            <tr><th scope="row">A08 Software and data integrity failures</th><td>Each file&rsquo;s real type is verified and it is scanned before reading. Incoming webhooks must carry a valid signature.</td></tr>
+            <tr><th scope="row">A09 Logging and alerting failures</th><td>Actions go into an audit trail, and sign-in codes never appear in production logs.</td></tr>
+            <tr><th scope="row">A10 Mishandling of exceptional conditions</th><td>The system fails safely: if the scanner is down the file is refused, and an unclear SAP result stops for a person.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="cost" class="cs-ch">
+        <p class="cs-no" data-rv="">08</p>
+        <h2 data-rv="">Keeping AI costs low<span class="dot">.</span></h2>
+        <p data-rv="">Our first discovery was uncomfortable: our own spend tracker did not match the real bill. On one comparison the old figures ran about 2.7 times too high. So we fixed the measurement before we cut anything.</p>
+        <ul class="cs-list">
+          <li data-rv=""><strong>Don&rsquo;t use AI where rules will do.</strong> Across 29 spreadsheets, plain rules matched the answer key 29 of 29 times, at no cost in about 5 milliseconds. Models got the same score for $0.28 to $0.86 in total and took 8 to 23 seconds.</li>
+          <li data-rv=""><strong>Never pay twice.</strong> Uploading the same file again reuses the earlier reading for free. Small talk with the copilot uses no model at all.</li>
+          <li data-rv=""><strong>Match the model to the job.</strong> A document read by AI cost under one US cent in our September logs. We benchmark candidate models on real documents and compare the score against the cost per file.</li>
+          <li data-rv=""><strong>Hard limits.</strong> Each copilot turn has a step cap, and each user and the whole system have a daily spend cap.</li>
+        </ul>
+      </section>
+
+      <section id="accuracy" class="cs-ch">
+        <p class="cs-no" data-rv="">09</p>
+        <h2 data-rv="">How we got film grades right<span class="dot">.</span></h2>
+        <p data-rv="">Reading a document is the easy part. The hard part is working out which film a customer means when the page says &ldquo;25&rdquo;. A wrong grade means the wrong film gets made, so this is where we spent the most time.</p>
+        <p data-rv="">An early audit on 71 real customer documents was humbling. Only 70% of lines were either right or honestly left for a person to answer. The misses taught us more than the score did:</p>
+        <ul class="cs-misses">
+          <li data-rv=""><b>The customer&rsquo;s past was missing.</b><span>Most customers had no order history in the new app. We loaded their SAP contract history.</span></li>
+          <li data-rv=""><b>Part numbers looked like grades.</b><span>A customer&rsquo;s own item code was being read as the film. We now read the film from the thickness and the description.</span></li>
+          <li data-rv=""><b>Family words were too broad.</b><span>&ldquo;High COF glossy&rdquo; fits several films. Now it narrows the list, and a person or that customer&rsquo;s history picks from it.</span></li>
+          <li data-rv=""><b>Nothing was being remembered.</b><span>Each confirmed choice now teaches the system what that customer&rsquo;s words mean. One odd order can&rsquo;t overturn a settled habit.</span></li>
+        </ul>
+        <p data-rv="">The result is a ladder. The system tries the surest answer first and stops when it has one. The AI only sees rows the rules could not settle, must choose from a short list of real candidates, and its answer is always marked for review.</p>
+        <ol class="cs-ladder">
+          <li data-rv=""><span>1</span>The exact film code is printed</li>
+          <li data-rv=""><span>2</span>Thickness plus a written grade match</li>
+          <li data-rv=""><span>3</span>The words point to exactly one film</li>
+          <li data-rv=""><span>4</span>This customer&rsquo;s own history, flagged</li>
+          <li data-rv=""><span>5</span>AI picks from candidates, flagged</li>
+          <li data-rv="" class="ask"><span>6</span>Left blank, and a person answers</li>
+        </ol>
+        <div class="cs-bars" data-rv="">
+          <p class="cs-bars-t">Grades resolved correctly by the rules, AI excluded (119 scored rows)</p>
+          <div class="cs-bar"><span>A new customer, no history</span><i><em style="--w:41.2%"></em></i><b>41.2%</b></div>
+          <div class="cs-bar on"><span>After learning from past orders</span><i><em style="--w:97.5%"></em></i><b>97.5%</b></div>
+        </div>
+        <div class="cs-callout" data-rv="">
+          <b>Where the 100% is</b>
+          <p>When the system filled a grade with no flag, it was right every time: <strong>96 of 96</strong> on this set, and <strong>36 of 36</strong> on a second set of 43 rows checked against SAP. The rest stay in front of a person: 20 flagged fills were right, 1 was wrong and 2 were left blank.</p>
+          <p class="cs-fine">These are regression sets built partly from past bugs, so they guard against mistakes coming back. They do not predict results on new documents. Handwriting can still be misread, and a 49 can look like a 44, which is why a person reviews before anything reaches SAP.</p>
+        </div>
+      </section>
+
+      <section id="impact" class="cs-ch">
+        <p class="cs-no" data-rv="">10</p>
+        <h2 data-rv="">The impact on the order desk<span class="dot">.</span></h2>
+        <p data-rv="">The job moved from typing an order to checking one. To see why that matters, look at a single line. Keying it into SAP meant entering the film, width, thickness, core, outer diameter, treatment, packing and quantity, picking the nearest roll quantity, and adding the rate. That takes a few minutes, and an order is rarely one line.</p>
+        <p data-rv="">Most contracts are small, but the big ones hurt. In one month&rsquo;s export, the typical contract had 4 lines, and six of them had between 47 and 65.</p>
+        <div class="cs-time" data-rv="">
+          <table>
+            <caption class="cs-sr">Time to enter orders into SAP, before and after AI sales order automation</caption>
+            <thead><tr><th scope="col"><span class="cs-sr">Order size</span></th><th scope="col">Before</th><th scope="col">Now</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">One line</th><td>A few minutes of keying</td><td><strong>Fills itself from the file</strong></td></tr>
+              <tr><th scope="row">A 40&ndash;50 line order</th><td>About an hour and a half</td><td><strong>Minutes of checking</strong></td></tr>
+              <tr><th scope="row">Ten orders</th><td>Hours at the keyboard</td><td><strong>Minutes, with a few clicks each</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p data-rv="">Here is the same order, step by step.</p>
+        <div class="cs-ba">
+          <div class="before" data-rv="">
+            <h3>Before</h3>
+            <ol>
+              <li>Order arrives by WhatsApp, phone or email</li>
+              <li>Sales manager works out what it means and fills an Excel sheet</li>
+              <li>Excel is emailed to the desk</li>
+              <li>Operator keys 15&ndash;20 SAP fields and picks the roll quantity</li>
+              <li>Operator returns later to enter discounts</li>
+              <li>Changes arrive by email and are keyed by hand</li>
+              <li>Officer prints the entries and compares them line by line</li>
+            </ol>
+          </div>
+          <div class="after" data-rv="">
+            <h3>After</h3>
+            <ol>
+              <li>Customer uploads an order, or the desk picks the customer and drops in a file or pasted email</li>
+              <li>Lines, PO details and likely grades fill themselves, each guess marked</li>
+              <li>A person checks the flagged rows, confirms the price and places the order</li>
+              <li>Rules run, a manager approves where required, and the desk submits</li>
+              <li>The contract is created, and an admin releases it</li>
+              <li>Changes go through a tracked request and approval</li>
+              <li>The system reads back what SAP stored, line by line</li>
+            </ol>
+          </div>
+        </div>
+        <table class="cs-table" data-rv="">
+          <caption class="cs-sr">How the order desk changed</caption>
+          <thead><tr><th scope="col"><span class="cs-sr">Task</span></th><th scope="col">Before</th><th scope="col">Now</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Reading a photo or PDF</th><td>A person, from experience</td><td>About 29 s by AI, then a person checks</td></tr>
+            <tr><th scope="row">Desk effort</th><td>Every field, every order</td><td>About 8 clicks over 4 screens, plus any edits</td></tr>
+            <tr><th scope="row">Customer shorthand</th><td>In sales managers&rsquo; heads</td><td>Saved per customer, and it improves with use</td></tr>
+            <tr><th scope="row">Checking against SAP</th><td>Print and compare</td><td>Automatic read-back when a contract is created</td></tr>
+            <tr><th scope="row">Record of changes</th><td>Hard to trace</td><td>Who changed what, when and why</td></tr>
+          </tbody>
+        </table>
+        <p class="cs-note" data-rv=""><strong>Where this stands.</strong> The platform is in production at the client. The test figures in this story come from controlled runs against SAP test systems, and the before figures are estimates. A timed study on live orders is the next step, and we will publish those numbers when we have them.</p>
+
+        <h3 class="cs-h3" data-rv="">How we got these numbers</h3>
+        <ul class="cs-list">
+          <li data-rv=""><strong>Before figures</strong> are estimates from our July 2026 requirement sessions and how the desk works. Nobody timed them with a stopwatch.</li>
+          <li data-rv=""><strong>System time and test orders</strong> come from scripted runs through the real interface against a SAP test system in September 2026. They include no human review.</li>
+          <li data-rv=""><strong>Grade accuracy</strong> comes from regression sets of 119 and 43 rows, using rules only, with the AI step excluded. We last ran them in November 2026.</li>
+          <li data-rv=""><strong>Order sizes</strong> come from one month&rsquo;s contract export, from July 2026.</li>
+        </ul>
+
+        <h3 class="cs-h3" data-rv="">What we would tell the next team</h3>
+        <ul class="cs-list">
+          <li data-rv=""><strong>Let the AI say &ldquo;I don&rsquo;t know&rdquo;.</strong> A blank a person fills costs seconds. A confident wrong grade costs a production run.</li>
+          <li data-rv=""><strong>Test like a user.</strong> The worst bugs only appeared in full journeys, in a real browser, against the real ERP.</li>
+          <li data-rv=""><strong>Measure before you optimise.</strong> That applies to accuracy and to the AI bill alike.</li>
+        </ul>
+      </section>
+
+      <section id="faq" class="cs-ch cs-faq">
+        <p class="cs-no" data-rv="">FAQ</p>
+        <h2 data-rv="">Questions about AI sales order automation<span class="dot">.</span></h2>
+        <div data-rv=""><h3>What is AI sales order automation?</h3><p>It uses AI to read a customer&rsquo;s order, in whatever format it arrives, and fill in the sales order for the ERP. In this project, fixed rules then check the order and a person approves it before it reaches SAP.</p></div>
+        <div data-rv=""><h3>How long does manual SAP order entry take?</h3><p>One line takes a few minutes, because it needs the film, width, thickness, core, outer diameter, treatment, packing, quantity, roll choice and rate. By our estimate from how the desk works, an order of 40 to 50 lines takes about an hour and a half.</p></div>
+        <div data-rv=""><h3>Why is sales order automation hard?</h3><p>Reading the document is the easy part. Customers use their own shorthand, so the system must learn what each one means. SAP also has strict rules on quantities, contracts and changes, and its responses cannot always be taken at face value.</p></div>
+        <div data-rv=""><h3>Does the AI write directly to SAP?</h3><p>No. The AI only reads and suggests. A background service writes to SAP through its own interfaces, and only after a person has approved the order.</p></div>
+        <div data-rv=""><h3>Can it read handwritten orders and phone photos?</h3><p>Yes. It reads phone photos, PDFs, spreadsheets and pasted emails. Handwriting is the hardest of these, so a person always reviews the order before it is placed.</p></div>
+        <div data-rv=""><h3>How accurate is AI at matching film grades?</h3><p>On our regression sets, every grade filled without a flag was right: 96 of 96 and 36 of 36. Grades it is unsure of are flagged or left blank for a person. These sets guard against old mistakes and do not predict results on new documents.</p></div>
+        <div data-rv=""><h3>How do you secure an AI system connected to SAP?</h3><p>Keep the AI away from SAP writes, use short-lived signed tokens with rotating refresh tokens, encrypt personal data, and check every role on the server. Then test against the OWASP Top 10, fix what you find, and re-test.</p></div>
+        <div data-rv=""><h3>Is this running in production?</h3><p>Yes. The platform is in production at the client. The test figures in this case study come from controlled runs against SAP test systems.</p></div>
+      </section>
+
+      <div class="cs-share" data-cs-share="" hidden>
+        <span>Share this case study</span>
+        <a data-share="linkedin" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a data-share="x" href="https://x.com/" target="_blank" rel="noopener">X</a>
+        <button type="button" data-share="copy">Copy link</button>
+      </div>
+
+      <aside class="cs-cta" data-rv="">
+        <h2>Is your team still keying orders into SAP<span class="dot">?</span></h2>
+        <p>We take <a class="cs-il" href="/#workflows">one workflow at a time</a> and measure it before moving to the next.</p>
+        <a class="cs-btn" href="mailto:hello@zonymouslabs.com">Talk to us <span aria-hidden="true">&rarr;</span></a>
+      </aside>
+    </div>
+  </div>
+</article>

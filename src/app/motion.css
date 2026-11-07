@@ -1,0 +1,167 @@
+/* Motion added on top of the source design. Transform, opacity and clip-path only.
+   Hover motion is gated to real pointers. site.css already removes all motion for reduced-motion users. */
+:root{
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-in-out:cubic-bezier(.77,0,.175,1);
+}
+
+/* ---- scroll reveal (explanation: content arrives in reading order; once per page view) ----
+   Hidden only when scripting is confirmed. layout.tsx removes `js` if the page never hydrates. */
+html.js [data-rv]{opacity:0;transform:translateY(14px);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out);transition-delay:calc(var(--i,0)*55ms)}
+html.js [data-rv].in{opacity:1;transform:none}
+/* big drawings wipe in from the left, the way their flow reads */
+/* the clip goes on the drawing, not the observed frame: a clipped target never reports as intersecting */
+html.js [data-rv="wipe"]{opacity:1;transform:none;transition:none}
+html.js [data-rv="wipe"]>svg{clip-path:inset(0 100% 0 0);transition:clip-path .9s var(--ease-out)}
+html.js [data-rv="wipe"].in>svg{clip-path:inset(0 0 0 0)}
+.lg-in{display:inline-flex}
+
+/* ---- hero entrance (delight: first paint only, once) ---- */
+/* .01, not 0: browsers skip text that starts fully transparent when timing the largest paint */
+@keyframes rise{from{opacity:.01;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes card-in{from{opacity:.01;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+.hero-words>*{animation:rise .7s var(--ease-out) both}
+.hero-words>:nth-child(1){animation-delay:.05s}
+.hero-words>:nth-child(2){animation-delay:.12s}
+.hero-words>:nth-child(3){animation-delay:.2s}
+.hero-words>:nth-child(4){animation-delay:.28s}
+.hero .hd-desk{animation:card-in .8s var(--ease-out) .25s both}
+.nav>.nav-in{animation:rise .5s var(--ease-out) both}
+
+/* readable contrast for the desk card's timestamps */
+.hd-desk time{color:#6A6A74}
+
+/* ---- nav: compact bar after the hero ---- */
+.nav.stuck{position:fixed;padding:9px 0;background:rgba(11,11,13,.82);border-bottom:1px solid rgba(255,255,255,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:transform .28s var(--ease-out)}
+.nav.stuck>.nav-in{animation:none}
+.nav.away{transform:translateY(-101%)}
+.nav .links a{position:relative;transition:color .15s ease}
+.nav .links a:hover{background:transparent}
+.link-pill{position:absolute;inset:0;border-radius:5px;background:rgba(255,255,255,.14)}
+.link-label{position:relative}
+.nav .links a[aria-current="true"]{color:#fff}
+@media(hover:hover) and (pointer:fine){.nav .links a:not([aria-current="true"]):hover{background:rgba(255,255,255,.08)}}
+.logo svg{transition:transform .25s var(--ease-out)}
+@media(hover:hover) and (pointer:fine){.logo:hover svg{transform:rotate(-6deg)}}
+
+/* ---- buttons: press feedback ---- */
+.btn{transition:filter .15s ease,transform .12s var(--ease-out),background-color .15s ease}
+.btn:active{transform:scale(.97)}
+
+/* ---- workflow cards ---- */
+.more-shell{grid-column:1/-1;overflow:hidden;background:var(--bg2)}
+.more-shell[hidden]{display:none}
+.more.wf-more{animation:none}
+.wc::after{transition:transform .22s var(--ease-out),background-color .15s ease,color .15s ease,border-color .15s ease}
+.wc[aria-expanded="true"]::after{transform:rotate(180deg)}
+.wc:active{background:var(--bg3)}
+.wf-card .h3{transition:color .15s ease}
+.wf-card .subs span{transition:background-color .15s ease}
+@media(hover:hover) and (pointer:fine){
+  .wc:hover .h3{color:var(--acc)}
+  .wc:hover::after{transform:rotate(90deg)}
+  .wc[aria-expanded="true"]:hover::after{transform:rotate(180deg)}
+  .wc:hover .subs span{background:#E2E7FF}
+}
+
+/* ---- tiles, badges and logos: quiet hover feedback ---- */
+.ctile .ic,.badge .ic{transition:transform .2s var(--ease-out)}
+.lg{transition:color .15s ease}
+.lg .nm{transition:color .15s ease}
+.im-list li{transition:background-color .15s ease}
+.gco,.gfacts div{transition:background .15s}
+@media(hover:hover) and (pointer:fine){
+  .ctile:hover .ic,.badge:hover .ic{transform:translateY(-2px)}
+  .lg:hover,.lg:hover .nm{color:var(--ink)}
+  .im-list li:hover .im-code{background:var(--acc);color:#fff}
+}
+.im-code{transition:background-color .15s ease,color .15s ease}
+
+/* ---- footer links: underline draws from the left ---- */
+.ft-links a{background:linear-gradient(currentColor,currentColor) left bottom/0 1px no-repeat;transition:color .15s ease,background-size .22s var(--ease-out)}
+@media(hover:hover) and (pointer:fine){.ft-links a:hover{background-size:100% 1px}}
+
+/* ---- case study band on the home page ---- */
+.csc{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);background:var(--bg);border:1px solid var(--ln);border-radius:var(--rc);overflow:hidden;text-decoration:none;color:inherit;transition:border-color .2s ease,box-shadow .25s var(--ease-out)}
+.csc-art{display:flex;align-items:center;overflow:hidden;background:#0B0B0D;box-shadow:inset 0 -3px 0 var(--acc)}
+.csc-art svg{display:block;width:100%;height:auto;transition:transform .5s var(--ease-out)}
+.csc-art .cs-rule{display:none}
+.csc-text{display:flex;flex-direction:column;padding:clamp(20px,2.4vw,32px);min-width:0}
+.csc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.csc-tags span{padding:3px 8px;border-radius:5px;background:var(--c-team);color:var(--c-agent);font-family:var(--m);font-size:11px;font-weight:500;letter-spacing:.02em;line-height:1.3}
+.csc-title{margin-top:14px;font-size:clamp(23px,2.3vw,30px);font-weight:500;letter-spacing:-.03em;line-height:1.1;color:var(--ink);text-wrap:balance}
+.csc-sum{margin-top:10px;font-size:14.5px;line-height:1.5;color:var(--t2)}
+.csc-points{margin-top:14px;display:grid;gap:9px;padding-top:13px;border-top:1px solid var(--ln2)}
+.csc-points>span{display:flex;flex-direction:column;gap:1px}
+.csc-points b{font-weight:500;font-size:14px;color:var(--ink);letter-spacing:-.01em;line-height:1.35}
+.csc-points small{font-size:13px;line-height:1.4;color:var(--t2)}
+.csc-go{margin-top:auto;padding-top:18px;display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--acc)}
+.csc-go span{transition:transform .22s var(--ease-out)}
+.csc:active{transform:scale(.995)}
+@media(hover:hover) and (pointer:fine){
+  .csc:hover{border-color:var(--acc);box-shadow:0 14px 40px rgba(34,64,230,.13)}
+  .csc:hover .csc-art svg{transform:scale(1.025)}
+  .csc:hover .csc-go span{transform:translateX(4px)}
+}
+@media(max-width:900px){.csc{grid-template-columns:1fr}.csc-art svg{height:auto}}
+
+/* ---- home FAQ ---- */
+.fq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--ln);border:1px solid var(--ln);border-radius:var(--rc);overflow:hidden}
+@media(max-width:980px){.fq-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.fq-grid{grid-template-columns:1fr}}
+.fq-item{background:var(--bg);padding:20px 22px 22px;transition:background-color .15s ease}
+.fq-item h3{font-size:16.5px;letter-spacing:-.015em;line-height:1.25;margin-bottom:8px}
+.fq-item p{font-size:14px;line-height:1.5}
+@media(hover:hover) and (pointer:fine){.fq-item:hover{background:var(--bg2)}}
+
+/* ---- case studies list ---- */
+.csi-hero{background:#0B0B0D;color:rgba(255,255,255,.74);padding:clamp(120px,16vh,172px) 0 clamp(44px,6vh,64px)}
+.csi-hero h1{max-width:none;font-size:clamp(36px,5vw,60px)}
+.csi-hero p{margin-top:16px;max-width:52ch;font-size:clamp(16px,1.4vw,18px)}
+.csi-list{min-height:50vh}
+
+/* ---- case study page chrome ---- */
+.cs-page .nav:not(.stuck){position:absolute}
+.cs-page .cs-progress{z-index:60}
+.cs-page .cs-toc{top:76px}
+
+/* ---- print ---- */
+@media print{html.js [data-rv]{opacity:1;transform:none}html.js [data-rv="wipe"]>svg{clip-path:none}.nav{display:none}}
+
+@media(prefers-reduced-motion:reduce){
+  html.js [data-rv]{opacity:1;transform:none;transition:none}
+  html.js [data-rv="wipe"]>svg{clip-path:none;transition:none}
+}
+
+/* ---- vertical breathing room ----
+   The source squeezes each section into one screen on short laptops, down to 18px of padding.
+   Sections may now run taller than the screen, so every band keeps real space. */
+.sec{padding:clamp(64px,8vw,104px) 0}
+.hd{margin-bottom:clamp(24px,3vw,40px)}
+.im-tier{margin:0 0 18px;padding-top:14px}
+.im-tier + .imp{margin-bottom:48px}
+.cgrid{gap:16px}
+.badges{margin-top:18px}
+.wclose{margin-top:18px}
+.gfacts{margin-top:18px}
+.gwhy{margin-top:24px}
+@media(min-width:981px) and (min-height:640px){
+  .sec.fs{padding:clamp(88px,12vh,128px) 0}
+  .hero .wrap{padding-top:96px;min-height:calc(100svh - 96px)}
+  .hgrid{padding-bottom:28px}
+  .ticker{margin-top:28px;padding:12px 0 16px}
+}
+@media(min-width:761px){
+  .wc.wf-card{padding:18px 20px 16px;gap:10px}
+  .ctile{padding:16px 16px 14px;gap:6px}
+  .badge{padding:14px 16px}
+  .bx{padding:clamp(14px,2vw,22px)}
+  .dgwrap{padding:clamp(10px,1.4vw,16px)}
+  .im-list li{padding:14px 0}
+  .wclose{padding:14px 20px}
+}
+@media(max-width:760px){
+  .sec{padding:64px 0}
+  .hd{margin-bottom:24px}
+  .im-tier + .imp{margin-bottom:36px}
+}

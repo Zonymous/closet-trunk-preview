@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Automating SAP sales orders with AI. A phone photo, a PDF, a spreadsheet and an email, scattered, become one clean contract approved by a person and saved in SAP.">
+  <defs>
+    <pattern id="cs-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#FFFFFF" stroke-opacity=".05"/></pattern>
+    <pattern id="cs-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#0B0B0D" stroke-opacity=".22" stroke-width="1.4"/></pattern>
+    <marker id="cs-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#FFFFFF"/></marker>
+  </defs>
+  <rect width="1200" height="630" fill="#0B0B0D"/>
+  <rect width="1200" height="630" fill="url(#cs-grid)"/>
+  <rect class="cs-rule" y="626" width="1200" height="4" fill="#2240E6"/>
+
+  <text x="64" y="84" font-family="Geist Mono, ui-monospace, monospace" font-size="20" letter-spacing=".6" fill="#FFFFFF" fill-opacity=".62">CASE STUDY &#183; MANUFACTURING</text>
+  <text font-family="Geist, -apple-system, sans-serif" font-size="60" font-weight="600" letter-spacing="-2.2" fill="#FFFFFF">
+    <tspan x="61" y="198">Automating</tspan>
+    <tspan x="61" y="274">SAP sales orders</tspan>
+    <tspan x="61" y="350">with AI<tspan fill="#6B7FFF">.</tspan></tspan>
+  </text>
+  <text x="64" y="556" font-family="Geist, -apple-system, sans-serif" font-size="23" fill="#FFFFFF" fill-opacity=".66">Any order format in. One clean contract in SAP.</text>
+
+  <!-- what arrives: four loose documents -->
+  <g font-family="Geist Mono, ui-monospace, monospace" font-size="15" fill="#FFFFFF">
+    <g transform="translate(560 118) rotate(-8)">
+      <rect width="158" height="136" rx="9" fill="#1A1A1F" stroke="#FFFFFF" stroke-opacity=".3"/>
+      <text x="14" y="28" fill-opacity=".8">Phone photo</text>
+      <path d="M16 56c10-11 16 10 26 0s15 9 25 0 16 8 28 0 14 7 25 1M16 84c12-9 15 9 27 0s14 8 24 0 18 7 27 0M16 110c10-8 15 8 25 0s17 7 29 0" fill="none" stroke="#FFFFFF" stroke-opacity=".62" stroke-width="2.4" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(704 150) rotate(7)">
+      <rect width="158" height="136" rx="9" fill="#1A1A1F" stroke="#FFFFFF" stroke-opacity=".3"/>
+      <text x="14" y="28" fill-opacity=".8">PDF order</text>
+      <path d="M16 54H142M16 72H142M16 90H110M16 108H128" stroke="#FFFFFF" stroke-opacity=".42" stroke-width="5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(568 296) rotate(6)">
+      <rect width="158" height="136" rx="9" fill="#1A1A1F" stroke="#FFFFFF" stroke-opacity=".3"/>
+      <text x="14" y="28" fill-opacity=".8">Spreadsheet</text>
+      <path d="M16 44H142V120H16ZM16 69H142M16 94H142M58 44V120M100 44V120" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="1.6"/>
+    </g>
+    <g transform="translate(712 322) rotate(-6)">
+      <rect width="158" height="136" rx="9" fill="#1A1A1F" stroke="#FFFFFF" stroke-opacity=".3"/>
+      <text x="14" y="28" fill-opacity=".8">Email</text>
+      <path d="M16 48H142V112H16ZM16 50l63 36 63-36" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="1.8" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <line x1="874" y1="308" x2="914" y2="308" stroke="#FFFFFF" stroke-width="2.5" marker-end="url(#cs-ar)"/>
+
+  <!-- what leaves: one clean contract -->
+  <g font-family="Geist, -apple-system, sans-serif">
+    <rect x="922" y="110" width="226" height="396" rx="13" fill="#FFFFFF"/>
+    <text x="942" y="154" font-size="25" font-weight="600" letter-spacing="-.6" fill="#0B0B0D">Contract</text>
+    <rect x="1088" y="134" width="44" height="27" rx="6" fill="#0E766A"/>
+    <text x="1110" y="153" font-size="15" font-weight="600" text-anchor="middle" fill="#FFFFFF">SAP</text>
+    <line x1="942" y1="178" x2="1128" y2="178" stroke="#E4E4E8"/>
+    <g font-size="18" fill="#4A4A52">
+      <text x="942" y="214">Customer</text>
+      <text x="942" y="258">Film grade</text>
+      <text x="942" y="302">Quantity</text>
+      <text x="942" y="346">Delivery</text>
+    </g>
+    <g fill="#2240E6">
+      <circle cx="1119" cy="208" r="10"/><circle cx="1119" cy="252" r="10"/><circle cx="1119" cy="296" r="10"/><circle cx="1119" cy="340" r="10"/>
+    </g>
+    <path d="M1114 208l3.6 3.6 6.4-7M1114 252l3.6 3.6 6.4-7M1114 296l3.6 3.6 6.4-7M1114 340l3.6 3.6 6.4-7" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="942" y="376" width="186" height="110" rx="9" fill="#FFFFFF" stroke="#0B0B0D" stroke-width="1.5"/>
+    <rect x="942" y="376" width="186" height="110" rx="9" fill="url(#cs-hatch)"/>
+    <text x="1035" y="425" font-size="20" font-weight="600" text-anchor="middle" fill="#0B0B0D">Approved</text>
+    <text x="1035" y="451" font-size="20" font-weight="600" text-anchor="middle" fill="#0B0B0D">by a person</text>
+  </g>
+</svg>
