@@ -12,6 +12,10 @@ npm run build && npm start
 
 Set `NEXT_PUBLIC_SITE_URL` when deploying. **Until it is set, every page says noindex and robots.txt blocks crawlers**, so a preview can never be indexed by mistake.
 
+## Deploy
+
+Vercel reads `vercel.json`, which pins the framework to Next.js. Without it the project can fall back to "Other" and serve a 404.
+
 ## Where things live
 
 | What | Where |

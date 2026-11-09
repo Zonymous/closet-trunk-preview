@@ -7,7 +7,9 @@ import { HOME_FAQ } from '@/content/homeFaq'
  * to stay away, so a preview can never be indexed with the wrong canonical address.
  */
 const configured = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '')
-export const SITE_URL = configured ?? 'http://localhost:3000'
+// On Vercel, link previews use the project's own address until a real domain is configured.
+const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined
+export const SITE_URL = configured ?? vercel ?? 'http://localhost:3000'
 export const INDEXABLE = Boolean(configured)
 
 export const absolute = (path: string) => `${SITE_URL}${path}`
